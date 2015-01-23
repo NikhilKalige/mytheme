@@ -53,3 +53,6 @@ docs/_build/
 # PyBuilder
 target/
 bower_components
+node_modules
+static
+.sass-cache

@@ -1,0 +1,10 @@
+// import bourbon
+@import "../bower_components/bourbon/app/assets/stylesheets/bourbon";
+
+// import neat
+@import "../bower_components/neat/app/assets/stylesheets/neat";
+
+.box:hover {
+  // Animation shorthand works the same as the CSS3 animation shorthand
+  @include animation(scale 1.0s ease-in, slide 2.0s ease);
+}
