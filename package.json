@@ -17,8 +17,10 @@
   "homepage": "https://github.com/NikhilKalige/mytheme",
   "devDependencies": {
     "browser-sync": "^1.9.1",
+    "colors": "^1.0.3",
     "gulp": "^3.8.10",
     "gulp-filter": "^2.0.0",
-    "gulp-sass": "^1.3.2"
+    "gulp-plumber": "^0.6.6",
+    "gulp-ruby-sass": "^0.7.1",
   }
 }
