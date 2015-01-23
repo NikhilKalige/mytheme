@@ -1,0 +1,17 @@
+{
+  "name": "theme",
+  "version": "0.0.0",
+  "homepage": "https://github.com/NikhilKalige/mytheme",
+  "authors": [
+    "lonewolf <nikhilkalige@gmail.com>"
+  ],
+  "description": "Theme for my website",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
