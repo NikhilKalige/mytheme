@@ -1,55 +1,41 @@
-@font-face {
-    font-family: "Playfair";
-    src: url("../fonts/playfair_display/PlayfairDisplay-Regular") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
+@include font-face("PlayfairRegular", "../fonts/playfair_display/PlayfairDisplay-Regular",
+    "normal", "normal",
+    $file-formats: ttf
+);
 
-@font-face {
-    font-family: "Playfair";
-    src: url("../fonts/playfair_display/PlayfairDisplay-Bold") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-}
+@include font-face("PlayfairItalic", "../fonts/playfair_display/PlayfairDisplay-Italic",
+    "normal", "italic",
+    $file-formats: ttf
+);
 
-@font-face {
-    font-family: "Playfair";
-    src: url("../fonts/playfair_display/PlayfairDisplay-Italic") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-}
+@include font-face("PlayfairBold", "../fonts/playfair_display/PlayfairDisplay-Bold",
+    "bold", "normal",
+    $file-formats: ttf
+);
 
-@font-face {
-    font-family: "Lora";
-    src: url("../fonts/lora/Lora-Regular") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
 
-@font-face {
-    font-family: "Lora";
-    src: url("../fonts/lora/Lora-Bold") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-}
+@include font-face("LoraBold", "../fonts/lora/Lora-Bold",
+    "bold", "normal",
+    $file-formats: ttf
+);
 
-@font-face {
-    font-family: "Lora";
-    src: url("../fonts/lora/Lora-Italic") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-}
+@include font-face("LoraItalic", "../fonts/lora/Lora-Italic",
+    "normal", "italic",
+    $file-formats: ttf
+);
 
-@font-face {
-    font-family: "Droidsans";
-    src: url("../fonts/droid_sans/DroidSans") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
+@include font-face("LoraRegular", "../fonts/lora/Lora-Regular",
+    "normal", "normal",
+    $file-formats: ttf
+);
 
-@font-face {
-    font-family: "Droidsans";
-    src: url("../fonts/droid_sans/DroidSans-Bold") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-}
+@include font-face("DroidsansBold", "../fonts/droid_sans/DroidSans-Bold",
+    "bold", "normal",
+    $file-formats: ttf
+);
+
+@include font-face("Droidsans", "../fonts/droid_sans/DroidSans",
+    "normal", "normal",
+    $file-formats: ttf
+);
+
