@@ -7,7 +7,8 @@ var colors = require("colors");
 var reload = browser_sync.reload;
 
 var paths = {
-    scss: "./scss/**/*.scss",
+    scss: "./scss/index.scss",
+    scss_glob: "./scss/**/*.scss",
     css: "./static/css"
 }
 
@@ -44,16 +45,18 @@ gulp.task("sass", function() {
 gulp.task("server", function() {
     browser_sync({
         server: {
-            baseDir: "./"
+            baseDir: "./",
+            browser: "google-chrome",
+            notify: false
         }
     });
 });
 
 gulp.task("default", ["server", "sass"], function() {
     /* Watch scss */
-    gulp.watch([paths.scss], ["sass"]);
+    gulp.watch([paths.scss_glob], ["sass"]);
     /* Watch html files */
-    gulp.watch(["*.html"], [reload]);
+    //gulp.watch(["*.html"], [reload]);
 });
 
 
