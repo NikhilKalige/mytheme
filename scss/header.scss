@@ -3,6 +3,7 @@ header {
   max-width: em(864);
   font-family: "PlayfairBold";
   padding-top: 1rem;
+  position: relative;
 
   @include media($medium-down) {
     text-align: center;
@@ -24,6 +25,7 @@ header a {
 header .title {
   font-size: 2.5rem;
   color: black;
+  position: relative;
 
   &:hover {
     color: rgba(0, 0, 0, 0.5);
@@ -94,13 +96,17 @@ nav a + a {
   margin-left: 1rem;
 }
 
-.i1 {
+.logo1 {
   width: 70px;
-  position: absolute
-
+  position: absolute;
+  left: 46%;
 }
 
-.i2 {
+.logo2 {
   position: absolute;
   width: 70px;
+  top: 0;
+  left: -47px;
+  opacity: 0.8;
+  z-index: -1;
 }
