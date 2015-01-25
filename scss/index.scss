@@ -19,22 +19,11 @@
 @import "footer";
 @import "posts";
 @import "tags";
+@import "about";
 
 .box:hover {
   // Animation shorthand works the same as the CSS3 animation shorthand
   @include animation(scale 1.0s ease-in, slide 2.0s ease);
-}
-
-h1 {
-    font-family: "PlayfairBold";
-}
-
-.dr {
-    line-height: 1.45;
-}
-
-.lr {
-    line-height: 1.45;
 }
 
 
