@@ -18,3 +18,16 @@
 .blog-post .article-tag li:after {
     margin-left: 0px;
 }
+
+.article-tag-copy {
+    text-align: center;
+    margin: 60px 0 60px 0;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(228, 229, 233, 0.96);
+}
+
+.article-tag-copy .article-tag {
+    font-family: "LoraItalic";
+    text-transform: none;
+    color: #ff3015;
+}
