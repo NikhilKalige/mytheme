@@ -1,13 +1,42 @@
 // import bourbon
 @import "../bower_components/bourbon/app/assets/stylesheets/bourbon";
 
+
+// import bitters
+//@import "../bower_components/bitters/base";
+
 // import neat
 @import "../bower_components/neat/app/assets/stylesheets/neat";
 
 // import fonts
+@import "h5bp";
+@import "normalize";
 @import "fonts";
+@import "variables";
+@import "typography";
+@import "header";
+
 
 .box:hover {
   // Animation shorthand works the same as the CSS3 animation shorthand
   @include animation(scale 1.0s ease-in, slide 2.0s ease);
+}
+
+h1 {
+    font-family: "PlayfairBold";
+}
+
+.dr {
+    font-family: "Droidsans";
+    line-height: 1.45;
+}
+
+.lr {
+    line-height: 1.45;
+}
+
+
+.cont {
+    width: 640px;
+    margin: 0 auto;
 }

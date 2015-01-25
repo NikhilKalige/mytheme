@@ -1,0 +1,7 @@
+$base-font-size: 18px;
+$em-base: $base-font-size;
+
+// media queries
+$small-up: em(320);
+$medium-up: em(792);
+$medium-down: max-width em(792);

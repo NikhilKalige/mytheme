@@ -1,0 +1,90 @@
+header {
+  margin: 0 auto;
+  max-width: em(864);
+  font-family: "PlayfairBold";
+  padding-top: 1rem;
+
+  @include media($medium-down) {
+    text-align: center;
+  }
+
+  @include media($medium-up) {
+    border-bottom: 1px solid red;
+    padding-top: 1.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+header .title {
+  font-size: 2.5rem;
+  color: black;
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.5);
+    @include transition(all 0.1s);
+  }
+
+  @include media($medium-down) {
+    float: center;
+    padding: 0 3rem 0.8rem 3rem;
+    border-bottom: groove 1px red;
+  }
+
+  @include media($medium-up) {
+    float: left;
+  }
+}
+
+header span:nth-child(1) {
+  font-family: "PlayfairRegular";
+}
+
+header nav {
+  @include media($medium-down) {
+    float: left;
+    width: 100%;
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1.33em;
+    font-size: rem(22);
+  }
+
+  @include media($medium-up) {
+      float: right;
+      padding-top: 0.6em;
+      font-size: rem(26);
+      height: 4em;
+  }
+}
+
+header a {
+  text-decoration: none;
+  position: relative;
+  color: black;
+}
+
+nav a {
+  &:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: red;
+    opacity: 0;
+    @include transition(height 0.3s, opacity 0.3s, transform 0.3s);
+    @include transform(translateY(-10px));
+  }
+
+  &:hover:after {
+    height: 5px;
+    opacity: 1;
+    @include transform(translateY(0px));
+  }
+}
+
+nav a + a {
+  margin-left: 1rem;
+}
