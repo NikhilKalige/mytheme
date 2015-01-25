@@ -1,148 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="static/css/index.css">
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
-    <header>
-        <a class="title" href="#">
-            <span>Short</span><span>Circuits</span>
-        </a>
-        <nav>
-            <a href="#">Projects</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </nav>
-        <div class="clearfix"></div>
-    </header>
-<div class="cont">
-<h1>
-  Models, collections <span class="amp">&amp;</span> data
-</h1>
+  <header>
+  <img class= "i1" src="http://nikhilkalige.github.io/techdroid/images/robot.png">
+    <a class="title" href="#">
+        <span>Short</span><span>Circuits</span>
+        <img class= "i2" src="http://nikhilkalige.github.io/techdroid/images/robot.png">
+    </a>
+    <nav>
+        <a href="#">Projects</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="clearfix"></div>
+  </header>
 
-<p class="dr">
-  Although models may reflect logic that’s on the server, they’re not meant to mirror all of it. Replicating every relation and validation that exists on the other side is time wasted. It may come down to that, but there’ll be a use case on the client app to justify it, or it’s useless.
-</p>
+  <section id="container">
+    <article>
+      <h1 class="title">
+        <a href="#">How to Make a Chrome Extension</a>
+      </h1>
 
-<div class="separator">★ ★ ★</div>
-
-<p class="dr">
-  Don’t clutter models with a lot of methods for rendering attributes in different ways, human-friendly, different date formats, and so on. Write a presenter object that's separate from the model, which you can pass the model to it's methods and it’ll handle that for you. Then pass that presenter to the view (more on that in the <a href="/views">views</a> chapter).
-</p>
-
-
-
-
-<div class="separator">★ ★ ★</div>
-
-<p class="lr">
-  Most apps communicate with a server using HTTP with a RESTful API. So the API URLs are of summary importance. Don't scatter them around the app. Write a module named <code class=" language-coffeescript">apiUrl</code> which exports a function with the same name. That module acts like a catalog of URLs, and model or collection that talks with the API has to require it. It looks like this:
-</p>
-
-
-<p class="lr">
-  Data associations are easy to solve without plugins <strong>if the server API is sane</strong>, so it’s worth making it so otherwise your data layer will absorb your API’s ugliness and amplify it by one hundred. Assume we have authors for those books I spoke of, and when fetching an author, I want to grab their books along. Say the API looks like this:
-</p>
-<p>
-  Then forever (no exceptions) refer to URLs by calling this module. In a <code class=" language-coffeescript">Book</code> model, it’d look like this:
-</p>
-
-
-<div class="separator">★ ★ ★</div>
-
-
-
-<p>
-  And by calling this URL I get the author object along with a <code class=" language-coffeescript">books</code> attribute which is an array of book objects, here’s how you’d do it:
-</p>
-
-
-<div class="separator">★ ★ ★</div>
-
-<p>
-  Loading associated data (one to many) is trivial once you think for a second about what makes sense. Assume you have this URL in your app:
-</p>
-
-
-
-<p>
-  You need to grab the author first and then his/her books. This could go one of two ways: you have loaded the author before, and thus it’s in memory, or you need to grab it from the server and then grab the books.
-</p>
-
-<p>
-  Before you OCD about performance and think you should do this in one request, consider you’re potentially creating an endpoint that will send down a huge amount of information. Correct use of caching, specifically <a href="http://en.wikipedia.org/wiki/HTTP_ETag">ETags</a>, will mitigate these problems by a lot.
-</p>
-
-<p>
-  In the method that’s called for that route, here’s how you’ll do it.
-</p>
-
-<p>
-  I can hear you having a heart attack over code repetition. But for starters, having the whole code that describes what happens when you visit each URL <strong>in the router itself</strong> is a terrible idea. I’ll explain this refactor further ahead in the <a href="/routing-and-controllers">Routing <span class="amp">&amp;</span> controllers</a> chapter.
-</p>
-
-<div class="separator">★ ★ ★</div>
-
-<p>
-  The best way to handle pagination is by using  <a href="http://tools.ietf.org/html/rfc5988">link headers</a> (<a href="http://developer.github.com/v3/">GitHub’s API uses it</a>). To be clear: pagination doesn’t rely on your necessarily having <strong>pages</strong> of information. You could use this for infinite scrolling, or that. How you present it goes beyond what your collection needs to worry about.
-</p>
-
-<p>
-  Integrating this with a Backbone collection is trivial (I’m using <a href="https://github.com/jfromaniello/parse-links">this</a> to parse it):
-</p>
-
-
-<p>
-  And since this header is emitted in every request, the collection object is kept up to date everytime it interacts with the server.
-</p>
-
-<div class="separator">★ ★ ★</div>
-
-<p>
-  The concept of a full/partial model is handy for cases where the server API emits “light” representations of models. Like in the case above, getting a list of books for an author, it’s quite likely that you’ll want to render a list and then when a user clicks an entry, you fetch and show the full book.
-</p>
-
-<p>
-  Which means you don’t necessarily want a request to return the complete book objects if they’ll be large and numerous (e.g.: containing a summary, comments, etc).
-</p>
-
-<p>
-  In the router, when fetching the model for rendering, you'd do:
-</p>
-
-
-<div class="separator">★ ★ ★</div>
-
-<p>
-  Where and when you instantiate your collections has to be consistent with the data strategy you conceive. It is
-  popular to instantiate a collection, fetch data for it, pass it to a view and render it for each route. But this pattern leaves out something you'll want 90% of the time, which is <strong>not</strong> discarding data you already have.
-</p>
-
-<p>
-  In the context of the previous example: the user visits the URL for a book, goes back to the list, visits a different book. Going back to the first book (say the user wants to double check something) needs to happen instantly. This doesn't mean you can't have the book model fetch data from the server everytime the URL is visited anyway, in case what's in the collection has gone stale, but it's worth rendering <strong>something</strong> right away. You can then re-render the book page as soon as <code class=" language-coffeescript"><span class="token function">fetch<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code> succeeds.
-</p>
-
-<p>
-  So say this app is about browsing authors and their books. Just instantiate and keep a “global” collection of authors around. Data always gets added to it as the user browses the app, similar to the previous examples where I referred to <code class=" language-coffeescript">App<span class="token punctuation">.</span>Authors</code>. Pass this collection around either via a global or by requiring it in each subsequent module.
-</p>
-
-<p>
-  Because every URL will always query whether the global collection contains an author and attempt to fetch it if not, you can keep the concern of flushing it to avoid reaching a point where you'll have thousands of authors in memory <strong>within</strong> the collection itself, which is ideal. You could do this maybe by ensuring the collection API endpoint supplies an ETag header that when changed, the next time the collection calls <code class=" language-coffeescript"><span class="token function">fetch<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code> you pass <code class=" language-coffeescript"><span class="token punctuation">{</span><span class="token attr-name"> </span><span class="token attr-name">remove:</span><span class="token attr-name"> </span><span class="token boolean">true</span><span class="token punctuation">,</span><span class="token attr-name"> </span><span class="token attr-name">reset:</span><span class="token attr-name"> </span><span class="token boolean">true</span><span class="token attr-name"> </span><span class="token punctuation">}</span></code>. Or really query how many objects the collection has.
-</p>
-
-<div class="separator">★ ★ ★</div>
-
-<p>
-  Backbone Collections are really smart in how they handle data. By default, they won't allow duplicate IDs, and if you re-add an existing model, you can pass <a href="http://backbonejs.org/#Collection-add">an option</a> to <code class=" language-coffeescript"><span class="token function">add<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code> which will get the collection to merge the attributes with the current model living in the collection.
-</p>
-
-<p>
-  If you're wondering why that matters, think of this: you can keep models synchronous using HTTP and WebSockets/Server-side events simultaneously. So long as you make it so that every message coming from the server uses the collection methods (<code class=" language-coffeescript"><span class="token function">add<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code>, <code class=" language-coffeescript"><span class="token function">remove<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code>), you can literally add real-time to an app on top of an existing HTTP/REST API without interfering with it at all, and enable or disable the functionality without the app breaking.
-</p>
-
-    </div>
+      <div class="post-header">
+        <div class="meta-info">
+          <div class="post-date">
+            <span>January 23, 2015</span>
+          </div>
+          <ul class="article-tag">
+            <li>
+              <a href="/tags/javascript">javascript</a>
+            </li>
+            <li>
+              <a href="/tags/chrome"> chrome</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="post-body">
+        <p class="dr">
+          Although models may reflect logic that’s on the server, they’re not meant to mirror all of it. Replicating every relation and validation that exists on the other side is time wasted. It may come down to that, but there’ll be a use case on the client app to justify it, or it’s useless.
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p class="dr">
+          Don’t clutter models with a lot of methods for rendering attributes in different ways, human-friendly, different date formats, and so on. Write a presenter object that's separate from the model, which you can pass the model to it's methods and it’ll handle that for you. Then pass that presenter to the view (more on that in the <a href="/views">views</a> chapter).
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p class="lr">
+          Most apps communicate with a server using HTTP with a RESTful API. So the API URLs are of summary importance. Don't scatter them around the app. Write a module named <code class=" language-coffeescript">apiUrl</code> which exports a function with the same name. That module acts like a catalog of URLs, and model or collection that talks with the API has to require it. It looks like this:
+        </p>
+        <p class="lr">
+          Data associations are easy to solve without plugins <strong>if the server API is sane</strong>, so it’s worth making it so otherwise your data layer will absorb your API’s ugliness and amplify it by one hundred. Assume we have authors for those books I spoke of, and when fetching an author, I want to grab their books along. Say the API looks like this:
+        </p>
+        <p>
+          Then forever (no exceptions) refer to URLs by calling this module. In a <code class=" language-coffeescript">Book</code> model, it’d look like this:
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p>
+          And by calling this URL I get the author object along with a <code class=" language-coffeescript">books</code> attribute which is an array of book objects, here’s how you’d do it:
+        </p>
+        <h2>Logging the URL</h2>
+        <p>
+          Loading associated data (one to many) is trivial once you think for a second about what makes sense. Assume you have this URL in your app:
+        </p>
+        <p>
+          You need to grab the author first and then his/her books. This could go one of two ways: you have loaded the author before, and thus it’s in memory, or you need to grab it from the server and then grab the books.
+        </p>
+        <p>
+          Before you OCD about performance and think you should do this in one request, consider you’re potentially creating an endpoint that will send down a huge amount of information. Correct use of caching, specifically <a href="http://en.wikipedia.org/wiki/HTTP_ETag">ETags</a>, will mitigate these problems by a lot.
+        </p>
+        <p>
+          In the method that’s called for that route, here’s how you’ll do it.
+        </p>
+        <p>
+          I can hear you having a heart attack over code repetition. But for starters, having the whole code that describes what happens when you visit each URL <strong>in the router itself</strong> is a terrible idea. I’ll explain this refactor further ahead in the <a href="/routing-and-controllers">Routing <span class="amp">&amp;</span> controllers</a> chapter.
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p>
+          The best way to handle pagination is by using  <a href="http://tools.ietf.org/html/rfc5988">link headers</a> (<a href="http://developer.github.com/v3/">GitHub’s API uses it</a>). To be clear: pagination doesn’t rely on your necessarily having <strong>pages</strong> of information. You could use this for infinite scrolling, or that. How you present it goes beyond what your collection needs to worry about.
+        </p>
+        <p>
+          Integrating this with a Backbone collection is trivial (I’m using <a href="https://github.com/jfromaniello/parse-links">this</a> to parse it):
+        </p>
+        <p>
+          And since this header is emitted in every request, the collection object is kept up to date everytime it interacts with the server.
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p>
+          The concept of a full/partial model is handy for cases where the server API emits “light” representations of models. Like in the case above, getting a list of books for an author, it’s quite likely that you’ll want to render a list and then when a user clicks an entry, you fetch and show the full book.
+        </p>
+        <p>
+          Which means you don’t necessarily want a request to return the complete book objects if they’ll be large and numerous (e.g.: containing a summary, comments, etc).
+        </p>
+        <p>
+          In the router, when fetching the model for rendering, you'd do:
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p>
+          Where and when you instantiate your collections has to be consistent with the data strategy you conceive. It is
+          popular to instantiate a collection, fetch data for it, pass it to a view and render it for each route. But this pattern leaves out something you'll want 90% of the time, which is <strong>not</strong> discarding data you already have.
+        </p>
+        <p>
+          In the context of the previous example: the user visits the URL for a book, goes back to the list, visits a different book. Going back to the first book (say the user wants to double check something) needs to happen instantly. This doesn't mean you can't have the book model fetch data from the server everytime the URL is visited anyway, in case what's in the collection has gone stale, but it's worth rendering <strong>something</strong> right away. You can then re-render the book page as soon as <code class=" language-coffeescript"><span class="token function">fetch<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code> succeeds.
+        </p>
+        <p>
+          So say this app is about browsing authors and their books. Just instantiate and keep a “global” collection of authors around. Data always gets added to it as the user browses the app, similar to the previous examples where I referred to <code class=" language-coffeescript">App<span class="token punctuation">.</span>Authors</code>. Pass this collection around either via a global or by requiring it in each subsequent module.
+        </p>
+        <p>
+          Because every URL will always query whether the global collection contains an author and attempt to fetch it if not, you can keep the concern of flushing it to avoid reaching a point where you'll have thousands of authors in memory <strong>within</strong> the collection itself, which is ideal. You could do this maybe by ensuring the collection API endpoint supplies an ETag header that when changed, the next time the collection calls <code class=" language-coffeescript"><span class="token function">fetch<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code> you pass <code class=" language-coffeescript"><span class="token punctuation">{</span><span class="token attr-name"> </span><span class="token attr-name">remove:</span><span class="token attr-name"> </span><span class="token boolean">true</span><span class="token punctuation">,</span><span class="token attr-name"> </span><span class="token attr-name">reset:</span><span class="token attr-name"> </span><span class="token boolean">true</span><span class="token attr-name"> </span><span class="token punctuation">}</span></code>. Or really query how many objects the collection has.
+        </p>
+        <div class="separator">★ ★ ★</div>
+        <p>
+          Backbone Collections are really smart in how they handle data. By default, they won't allow duplicate IDs, and if you re-add an existing model, you can pass <a href="http://backbonejs.org/#Collection-add">an option</a> to <code class=" language-coffeescript"><span class="token function">add<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code> which will get the collection to merge the attributes with the current model living in the collection.
+        </p>
+        <p>
+          If you're wondering why that matters, think of this: you can keep models synchronous using HTTP and WebSockets/Server-side events simultaneously. So long as you make it so that every message coming from the server uses the collection methods (<code class=" language-coffeescript"><span class="token function">add<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code>, <code class=" language-coffeescript"><span class="token function">remove<span class="token punctuation">(</span></span><span class="token punctuation">)</span></code>), you can literally add real-time to an app on top of an existing HTTP/REST API without interfering with it at all, and enable or disable the functionality without the app breaking.
+        </p>
+      </div>
+    </article>
+  </section>
+  <footer>
+    Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>. Source available on <a href="https://github.com/nikhilkalige/theme">Github</a>
+  </footer>
 </body>
 </html>

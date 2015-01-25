@@ -16,6 +16,11 @@ header {
   }
 }
 
+header a {
+  text-decoration: none;
+  box-shadow: none;
+}
+
 header .title {
   font-size: 2.5rem;
   color: black;
@@ -87,4 +92,15 @@ nav a {
 
 nav a + a {
   margin-left: 1rem;
+}
+
+.i1 {
+  width: 70px;
+  position: absolute
+
+}
+
+.i2 {
+  position: absolute;
+  width: 70px;
 }

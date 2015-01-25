@@ -1,0 +1,107 @@
+#container {
+    max-width: $max-width;
+    padding: 0 2em;
+    margin: 0 auto;
+    margin-top: 6em;
+}
+
+article .title {
+    font-size: 2.1em;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+article .title a {
+    color: black;
+    text-decoration: none;
+}
+
+.meta-info {
+    padding-bottom: 3rem;
+    text-align: center;
+    font-family: "Droid Serif";
+    line-height: 1.65;
+    font-size: rem(16);
+}
+
+.post-date {
+    margin: 1rem 0 0;
+}
+
+.article-tag {
+    letter-spacing: 1;
+    text-transform: uppercase;
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.article-tag li {
+    display: inline-block;
+    font-family: "LoraItalic";
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.article-tag li:after {
+    content: ',';
+    display: inline-block;
+    margin-left: -4px;
+    margin-right: 4px;
+}
+
+.article-tag li:last-of-type:after {
+    display: none;
+}
+
+.post-body {
+    border-top: 1px solid rgba(228, 229, 233, 0.96);
+    padding-top: 3rem;
+    position: relative;
+}
+
+.post-body h2 {
+    font-size: 1.62em;
+}
+
+.post-body h2, .post-body h3, .post-body h4, .post-body h5 {
+    margin: 3rem 0 1rem 0;
+}
+
+
+.post-body a {
+    color: #AD141E;
+    box-shadow: 0px 1px 0px 0px rgba(173, 20, 30, 0.1);
+    text-decoration: none;
+    -webkit-transition: color 0.1s linear;
+    -moz-transition: color 0.1s linear;
+    transition: color 0.1s linear;
+}
+
+.post-body p {
+    margin: 0 0 1.404em;
+}
+
+code {
+    color: #404D5B;
+    position: relative;
+    font-family: "Droid Serif";
+
+    &:before {
+        position: absolute;
+        top: 0px;
+        z-index: -1;
+        box-sizing: content-box;
+        padding: 0px 2px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(50, 50, 50, 0.1);
+        content: "";
+        opacity: 1;
+        left: -2px;
+        border-radius: 3px;
+    }
+}

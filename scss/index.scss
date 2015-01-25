@@ -15,7 +15,8 @@
 @import "variables";
 @import "typography";
 @import "header";
-
+@import "article";
+@import "footer";
 
 .box:hover {
   // Animation shorthand works the same as the CSS3 animation shorthand
@@ -27,7 +28,6 @@ h1 {
 }
 
 .dr {
-    font-family: "Droidsans";
     line-height: 1.45;
 }
 
