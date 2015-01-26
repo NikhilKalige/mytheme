@@ -49,7 +49,7 @@ gulp.task("sass", function() {
             errorHandler: error_handler
         }))
         .pipe(sass({
-            sourcemapPath: paths.css,
+            //sourcemapPath: paths.css,
             style: "expanded",
             lineNumbers: true
         }))
@@ -93,5 +93,5 @@ gulp.task("default", ["server", "sass"], function() {
     //gulp.watch(["*.html"], [reload]);
 });
 
-
+gulp.task("theme", ["copy", "sass"]);
 
