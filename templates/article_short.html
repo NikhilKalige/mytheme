@@ -1,0 +1,12 @@
+<li class="blog-post">
+    <h1 class="title">
+        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+    </h1>
+    <p>{{ article.summary }}</p>
+    <div class="meta-info">
+        <div class="post-date">
+            <span>January 23, 2015</span>
+        </div>
+        {% include 'taglist.html' %}
+    </div>
+</li>

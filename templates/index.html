@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content_title %}{% endblock %}
+{% block content %}
+{% if articles %}
+    <ul class="post-list">
+    {% for article in articles %}
+        {% include 'article_short.html' %}
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock content %}

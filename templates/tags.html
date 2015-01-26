@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ SITENAME }} - Tags{% endblock %}
+{% block content %}
+<div class="tags">
+    {% with tag_list = [] %}
+        {% for tag, articles in tags|sort %}
+            {% do tag_list.append(tag) %}
+        {%  endfor %}
+
+        {% set tag_list = tag_list|gtag %}
+
+
+        {% for letter, tag_group in tag_list %}
+            <div class="tag-row">
+                <div class="tag-letter">{{letter}}</div>
+                {% for tag in tag_group %}
+                    <a class="tag" href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
+                {%  endfor %}
+            </div>
+        {%  endfor %}
+    {% endwith %}
+</div>
+{% endblock %}

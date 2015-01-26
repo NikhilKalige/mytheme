@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ SITENAME }} - {{ tag }}{% endblock %}
+{% block content %}
+<div class="article-tag-copy">
+    <p>
+        Following articles are tagged
+        <span class="article-tag">{{ tag }}.</span>
+    </p>
+    <p>
+        <a href="{{ SITEURL }}/tags">View all tags.</a>
+    </p>
+</div>
+<ul class="post-list">
+    {% for article in articles %}
+        {% include 'article_short.html' %}
+    {% endfor %}
+</ul>
+
+{% endblock %}

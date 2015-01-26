@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="{{ DEFAULT_LANG }}">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{{ SITENAME }}{%endblock%}</title>
+    <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/{{ CSS_FILE }}" />
+</head>
+
+<body>
+    {% include 'analytics.html' %}
+
+    <div class="wrapper">
+        <header>
+            <a class="title" href="{{ SITEURL }}/">
+                <span>Short</span><span>Circuits</span>
+                <img class= "logo2" alt="site-logo" src="{{ SITEURL }}/static/images/robot.png">
+            </a>
+            <nav>
+                <a href="{{ SITEURL }}/">Projects</a>
+                <a href="{{ SITEURL }}/about">About</a>
+                <a href="{{ SITEURL }}/contact">Contact</a>
+            </nav>
+            <div class="clearfix"></div>
+        </header>
+
+        <section id="container">
+            {% block content %}
+            {% endblock %}
+        </section>
+        <div class="push"></div>
+    </div>
+
+    <footer>
+        Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>. Source available on <a href="https://github.com/nikhilkalige/theme">Github</a>
+    </footer>
+</body>
+</html>
