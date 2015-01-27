@@ -20,6 +20,7 @@ var paths = {
     production: "./pelican-theme",
     development: ".",
     css: "/static/css",
+    js: "/statis/js"
 }
 
 /**
@@ -68,6 +69,8 @@ gulp.task("copy", function() {
         .pipe(gulp.dest(paths.production + "/static/fonts/"));
     gulp.src(paths.development + "/static/images/**/*")
         .pipe(gulp.dest(paths.production + "/static/images/"));
+    gulp.src(paths.development + "/static/js/**/*")
+        .pipe(gulp.dest(paths.production + "/static/js/"));
     gulp.src(paths.development + "/templates/**/*")
         .pipe(gulp.dest(paths.production + "/templates/"));
 });

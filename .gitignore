@@ -54,6 +54,6 @@ docs/_build/
 target/
 bower_components
 node_modules
-static
+#static
 .sass-cache
 pelican-theme
