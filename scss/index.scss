@@ -20,14 +20,4 @@
 @import "posts";
 @import "tags";
 @import "about";
-
-.box:hover {
-  // Animation shorthand works the same as the CSS3 animation shorthand
-  @include animation(scale 1.0s ease-in, slide 2.0s ease);
-}
-
-
-.cont {
-    width: 640px;
-    margin: 0 auto;
-}
+@import "highlight_dark";
