@@ -65,14 +65,16 @@ gulp.task("sass", function() {
  */
 gulp.task("copy", function() {
     del([paths.production + "**/*"]);
-    gulp.src(paths.development + "/static/fonts/**/*")
-        .pipe(gulp.dest(paths.production + "/static/fonts/"));
-    gulp.src(paths.development + "/static/images/**/*")
-        .pipe(gulp.dest(paths.production + "/static/images/"));
-    gulp.src(paths.development + "/static/js/**/*")
-        .pipe(gulp.dest(paths.production + "/static/js/"));
-    gulp.src(paths.development + "/templates/**/*")
-        .pipe(gulp.dest(paths.production + "/templates/"));
+    gulp.src([
+        paths.development + "/static/fonts/**/*",
+        paths.development + "/static/images/**/*",
+        paths.production + "/static/js"
+        ],
+        { base: 'static'}
+    )
+        .pipe(gulp.dest(paths.production + "/static"));
+    gulp.src([paths.development + "/templates/**/*"], {base: 'templates'})
+        .pipe(gulp.dest(paths.production + "/templates"));
 });
 
 
