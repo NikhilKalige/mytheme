@@ -13,7 +13,6 @@
     $file-formats: ttf
 );
 
-
 @include font-face("LoraBold", "../fonts/lora/Lora-Bold",
     "bold", "normal",
     $file-formats: ttf
@@ -39,3 +38,12 @@
     $file-formats: ttf
 );
 
+@include font-face("Inconsolata", "../fonts/inconsolata/Inconsolata-Regular",
+    "normal", "normal",
+    $file-formats: ttf
+);
+
+@include font-face("InconsolataBold", "../fonts/inconsolata/Inconsolata-Bold",
+    "bold", "normal",
+    $file-formats: ttf
+);
