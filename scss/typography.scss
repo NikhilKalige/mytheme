@@ -27,3 +27,25 @@ p {
     font-size: 1rem;
     line-height: 1.5;
 }
+
+textarea, code, tt, pre {
+    font-family: 'Inconsolata', sans-serif, monospace!important;
+    color: #000;
+    background: #eee;
+}
+
+pre {
+    padding: 7px 30px;
+    margin: 15px -30px;
+    line-height: 1.3;
+    border-style:solid;
+    border-width:1px;
+    border-color:#bbb;
+}
+
+code, tt {
+    padding: 1px 4px 1px 4px;
+    border-style:solid;
+    border-width:1px;
+    border-color:#bbb;
+}
