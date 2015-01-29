@@ -1,7 +1,15 @@
 html, body {
-    font-size: 18px;
+    font-size: 16px;
     font-family: "Droid Serif";
     height: 100%;
+
+    @include media($medium-up) {
+        font-size: 18px;
+    }
+
+    @include media($large-up) {
+        font-size: 20px;
+    }
 }
 
 a {
