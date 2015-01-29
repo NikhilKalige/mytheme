@@ -10,6 +10,8 @@ var rename = require('gulp-rename');
 var gulpif = require('gulp-if');
 var lazypipe = require('lazypipe');
 var del = require("del");
+var imagemin = require("imagemin");
+//var optipng = require("imagemin-optipng");
 var argv = require('yargs').argv;
 
 var production = !!(argv.production);
@@ -67,16 +69,35 @@ gulp.task("copy", function() {
     del([paths.production + "**/*"]);
     gulp.src([
         paths.development + "/static/fonts/**/*",
-        paths.development + "/static/images/**/*",
         paths.production + "/static/js"
         ],
         { base: 'static'}
     )
         .pipe(gulp.dest(paths.production + "/static"));
+
+    // copy images
+    gulp.src([paths.development + "/static/images/**/*.ico"])
+        .pipe(gulp.dest(paths.production + "/static/images/"));
+
+    // copy templates
     gulp.src([paths.development + "/templates/**/*"], {base: 'templates'})
         .pipe(gulp.dest(paths.production + "/templates"));
 });
 
+/**
+ * Imagemin task
+ */
+gulp.task("image", function() {
+    var image_task = new imagemin()
+        .src(paths.development + "/static/images/**/*.png")
+        .dest(paths.production + "/static/images/")
+        .use(imagemin.optipng({optimizationLevel: 5}));
+
+    image_task.run(function (err, files) {
+        if (err)
+            throw err;
+    });
+})
 
 /**
  * Start server
