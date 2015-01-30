@@ -119,5 +119,5 @@ gulp.task("default", ["server", "sass"], function() {
     //gulp.watch(["*.html"], [reload]);
 });
 
-gulp.task("theme", ["copy", "sass"]);
+gulp.task("theme", ["copy", "sass", "image"]);
 
