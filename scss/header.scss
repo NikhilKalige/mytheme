@@ -34,6 +34,7 @@ header .title {
   font-size: 2.5rem;
   color: black;
   position: relative;
+  letter-spacing: -2.5px;
 
   &:hover {
     color: rgba(0, 0, 0, 0.5);
@@ -43,7 +44,7 @@ header .title {
   @include media($medium-down) {
     float: center;
     padding: 0 3rem 0.8rem 3rem;
-    border-bottom: groove 1px red;
+    border-bottom: groove 1px #777;
   }
 
   @include media($medium-up) {
@@ -115,6 +116,6 @@ nav a + a {
   width: 70px;
   top: 0;
   left: -47px;
-  opacity: 0.8;
+  //opacity: 0.8;
   z-index: -1;
 }
