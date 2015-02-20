@@ -1,8 +1,11 @@
 #container {
     max-width: $max-width;
-    padding: 0 2em;
+    padding: 0 0.8em;
     margin: 0 auto;
     margin-top: 6em;
+    @include media($medium-up) {
+        padding: 0 2em;
+    }
 }
 
 article .title {
@@ -18,7 +21,8 @@ article .title a {
 
 .meta-info {
     padding-bottom: 3rem;
-    text-align: center;
+    padding-left: 7px;
+    //text-align: center;
     font-family: "Droid Serif";
     line-height: 1.65;
     font-size: rem(16);
@@ -32,7 +36,7 @@ article .title a {
     letter-spacing: 1;
     text-transform: uppercase;
     list-style: none;
-    text-align: center;
+    //text-align: center;
     padding: 0;
     margin: 0;
 }
