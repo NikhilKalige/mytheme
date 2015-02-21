@@ -19,6 +19,7 @@ article .title a {
     text-decoration: none;
 }
 
+
 .meta-info {
     padding-bottom: 3rem;
     padding-left: 7px;
@@ -39,6 +40,10 @@ article .title a {
     //text-align: center;
     padding: 0;
     margin: 0;
+}
+
+article .meta-info {
+    text-align: center;
 }
 
 .article-tag li {
