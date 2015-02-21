@@ -1,11 +1,15 @@
-<li class="blog-post">
-    <h1 class="title">
+<li class="blog-post" itemscope itemtype="http://schema.org/Article">
+    <h1 class="title" itemprop="name">
         <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
     </h1>
     {# <p>{{ article.summary }}</p> #}
     <div class="meta-info">
         <div class="post-date">
-            <span>January 23, 2015</span>
+            <span>
+                <time itemprop="dateCreated" datetime="{{ article.date|strftime('%Y-%m-%d') }}">
+                    {{ article.date|strftime('%B %d, %Y') }}
+                </time>
+            </span>
         </div>
         {% include 'taglist.html' %}
     </div>

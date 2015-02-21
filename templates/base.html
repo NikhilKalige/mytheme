@@ -12,16 +12,16 @@
     <meta name="author" content="Nikhil K">
 </head>
 
-<body>
+<body itemscope itemtype="http://schema.org/WebPage">
     {% include 'analytics.html' %}
 
     <div class="wrapper">
         <header>
-            <a class="title" href="{{ SITEURL }}/">
+            <a class="title" href="{{ SITEURL }}/" itemprop="url">
                 <span>Short</span><span>Circuits</span>
                 <img class= "logo2" alt="site-logo" src="{{ SITEURL }}/static/images/logo.png">
             </a>
-            <nav>
+            <nav itemprop="breadcrumb">
                 <a href="{{ SITEURL }}/">Projects</a>
                 <a href="{{ SITEURL }}/about">About</a>
                 <a href="{{ SITEURL }}/contact">Contact</a>
@@ -29,7 +29,7 @@
             <div class="clearfix"></div>
         </header>
 
-        <section id="container">
+        <section id="container" itemprop="http://schema.org/mainContentOfPage">
             {% block content %}
             {% endblock %}
         </section>
@@ -37,7 +37,7 @@
     </div>
 
     <footer>
-        Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>. Source available on <a href="https://github.com/nikhilkalige/nikhilkalige.github.io">Github</a>
+        Powered by <a href="https://github.com/getpelican/pelican" itemprop="url">Pelican</a>. Source available on <a href="https://github.com/nikhilkalige/nikhilkalige.github.io" itemprop="url">Github</a>
     </footer>
 </body>
 </html>
