@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ SITENAME }} | Projects
+{% endblock %}
+{% block content %}
+{% if pages %}
+    <ul class="post-list" itemscope itemtype="http://schema.org/Blog">
+    {% for article in pages if article.title not in ["Contact", "About"]%}
+        {% include 'article_short.html' %}
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock content %}
