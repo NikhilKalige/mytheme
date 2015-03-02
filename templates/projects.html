@@ -5,7 +5,7 @@
 {% block content %}
 {% if pages %}
     <ul class="post-list" itemscope itemtype="http://schema.org/Blog">
-    {% for article in pages if article.title not in ["Contact", "About"]%}
+    {% for article in articles|selectattr("project") %}
         {% include 'article_short.html' %}
     {% endfor %}
     </ul>
