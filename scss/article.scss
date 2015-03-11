@@ -66,6 +66,10 @@ article .meta-info {
     display: none;
 }
 
+article .article-tag li:after {
+    margin-left: 0px;
+}
+
 .post-body {
     border-top: 1px solid rgba(228, 229, 233, 0.96);
     padding-top: 3rem;
@@ -113,4 +117,24 @@ code {
         left: -2px;
         border-radius: 3px;
     }
+}
+
+.post-body img {
+    margin: .85rem auto;
+    max-width: 100%;
+    display: block;
+}
+
+.post-body ul, .post-body ol {
+    margin-bottom: 1rem;
+}
+
+.post-body ul {
+    list-style-type: disc;
+    margin-left: 1.1rem;
+}
+
+.post-body ol {
+    list-style-type: decimal;
+    margin-left: 1.3rem;
 }
