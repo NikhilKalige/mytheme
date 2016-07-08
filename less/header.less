@@ -13,11 +13,11 @@ header {
   padding-top: 1rem;
   position: relative;
 
-  @include media($medium-down) {
+  @include media(@medium-down) {
     text-align: center;
   }
 
-  @include media($medium-up) {
+  @include media(@medium-up) {
     border-bottom: 1px solid #777;
     padding-top: 1.5rem;
     padding-left: 2rem;
@@ -41,13 +41,13 @@ header .title {
     @include transition(all 0.1s);
   }
 
-  @include media($medium-down) {
+  @include media(@medium-down) {
     float: center;
     padding: 0 3rem 0.8rem 3rem;
     border-bottom: groove 1px #777;
   }
 
-  @include media($medium-up) {
+  @include media(@medium-up) {
     float: left;
   }
 }
@@ -58,7 +58,7 @@ header span:nth-child(1) {
 
 header nav {
   letter-spacing: -1.5px;
-  @include media($medium-down) {
+  @include media(@medium-down) {
     float: left;
     width: 100%;
     text-align: center;
@@ -67,7 +67,7 @@ header nav {
     font-size: 1.5rem;
   }
 
-  @include media($medium-up) {
+  @include media(@medium-up) {
       float: right;
       padding-top: 0.6em;
       font-size: rem(26);

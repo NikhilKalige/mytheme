@@ -1,11 +1,11 @@
 var gulp = require("gulp");
 var browser_sync = require("browser-sync");
-var sass = require("gulp-ruby-sass");
+var less = require("gulp-less");
 var filter = require("gulp-filter");
 var plumber = require('gulp-plumber');
 var colors = require("colors");
 var reload = browser_sync.reload;
-var minify_css = require('gulp-minify-css');
+var minify_css = require('gulp-clean-css');
 var rename = require('gulp-rename');
 var gulpif = require('gulp-if');
 var lazypipe = require('lazypipe');
@@ -17,8 +17,8 @@ var argv = require('yargs').argv;
 var production = !!(argv.production);
 
 var paths = {
-    scss: "./scss/index.scss",
-    scss_glob: "./scss/**/*.scss",
+    less: "./less/index.less",
+    less_glob: "./less/**/*.less",
     production: "./pelican-theme",
     development: ".",
     css: "/static/css",
@@ -45,16 +45,14 @@ var css_minify_pipe = lazypipe()
 /**
  * Sass Task
  */
-gulp.task("sass", function() {
-    console.log('[sass]'.bold.magenta + ' Compiling Sass');
-    return gulp.src(paths.scss)
+gulp.task("less", function() {
+    console.log('[less]'.bold.magenta + ' Compiling Less');
+    return gulp.src(paths.less)
         .pipe(plumber({
             errorHandler: error_handler
         }))
-        .pipe(sass({
+        .pipe(less({
             //sourcemapPath: paths.css,
-            style: "expanded",
-            lineNumbers: true
         }))
         .pipe(gulp.dest(paths.development + paths.css))
         .pipe(filter("**/*.css"))
@@ -112,12 +110,12 @@ gulp.task("server", function() {
     });
 });
 
-gulp.task("default", ["server", "sass"], function() {
-    /* Watch scss */
-    gulp.watch([paths.scss_glob], ["sass"]);
+gulp.task("default", ["server", "less"], function() {
+    /* Watch less */
+    gulp.watch([paths.less_glob], ["less"]);
     /* Watch html files */
     //gulp.watch(["*.html"], [reload]);
 });
 
-gulp.task("theme", ["copy", "sass", "image"]);
+gulp.task("theme", ["copy", "less", "image"]);
 

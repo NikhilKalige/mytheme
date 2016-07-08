@@ -3,11 +3,11 @@ html, body {
     font-family: "Droid Serif";
     height: 100%;
 
-    @include media($medium-up) {
+    @include media(@medium-up) {
         font-size: 18px;
     }
 
-    @include media($large-up) {
+    @include media(@large-up) {
         font-size: 20px;
     }
 }
@@ -50,7 +50,7 @@ pre {
     border-width:1px;
     border-color:#bbb;
 
-    @include media($medium-up) {
+    @include media(@medium-up) {
         margin: 15px -30px;
     }
 }
