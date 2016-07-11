@@ -10,7 +10,7 @@ var rename = require('gulp-rename');
 var gulpif = require('gulp-if');
 var lazypipe = require('lazypipe');
 var del = require("del");
-var imagemin = require("imagemin");
+var imagemin = require("gulp-imagemin");
 //var optipng = require("imagemin-optipng");
 var argv = require('yargs').argv;
 
@@ -86,16 +86,12 @@ gulp.task("copy", function() {
  * Imagemin task
  */
 gulp.task("image", function() {
-    var image_task = new imagemin()
-        .src(paths.development + "/static/images/**/*.png")
+    gulp.src(paths.development + "/static/images/**/*.png")
+        .pipe(imagemin())
         .dest(paths.production + "/static/images/")
         .use(imagemin.optipng({optimizationLevel: 5}));
 
-    image_task.run(function (err, files) {
-        if (err)
-            throw err;
-    });
-})
+});
 
 /**
  * Start server
@@ -117,5 +113,6 @@ gulp.task("default", ["server", "less"], function() {
     //gulp.watch(["*.html"], [reload]);
 });
 
+// Use --production for minifying
 gulp.task("theme", ["copy", "less", "image"]);
 
