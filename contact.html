@@ -2,38 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Document</title>
-  <link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:300,700|Quattrocento:400,700" rel="stylesheet">
   <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
   <div class="wrapper">
     <header>
-      <img class= "logo1" src="http://nikhilkalige.github.io/techdroid/images/robot.png">
-      <a class="title" href="#">
-          <span>Short</span><span>Circuits</span>
-          <img class= "logo2" src="http://nikhilkalige.github.io/techdroid/images/robot.png">
-      </a>
+      <div class="header clearfix">
+      <div class="logo">
+        <a href="/">
+          <!-- <img alt="ShortCircuits logo" src="/static/images/logo.svg"> -->
+          <object type="image/svg+xml" data="/static/images/logo.svg">Your browser does not support SVGs</object>
+        </a>
+      </div>
       <nav>
-          <a href="#">Projects</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+        <ul>
+          <li class="active" ><a href="#">Projects</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
       </nav>
-      <div class="clearfix"></div>
     </header>
 
     <section id="container">
+      <p>Hi, I am Nikhil K. I am a Electronics Engineer pursuing my Master’s in <a href="https://asu.edu">Arizona State&nbsp;University</a></p>
+      <p>I am a technical enthusiast, i usually work on embedded systems close to the hardware end. Besides doing electronicky stuff, i write lots of code mostly in Python and&nbsp;Javascript</p>
+      <p>If you leave out the technical jargon, i read a lot a novels(only fantasy pleasee). Besides i like to model stuff in Solidworks. I also enjoy woodworking, sketching and hiking in the&nbsp;woods</p>
       <div class="contact-content">
         <p>Whether you would like to get extra information on any of my work, ask me about this site or just say hello then I would love to hear from you.</p>
         <a class="mail" href="mailto:nikhilkalige@gmail.com">Email nikhilkalige@gmail.com </a>
       </div>
       <div class="social">
         <a href="http://linkedin.com/nikhilkalige" class="ln" title="Linkedin" target="_blank">
-          <span class="logo"></span>
+          <span class="icons"></span>
           <span class="text">linkedin://nikhilkalige</span>
         </a>
         <a href="http://github.com/nikhilkalige" class="gb" title="Github" target="_blank">
-          <span class="logo"></span>
+          <span class="icons"></span>
           <span class="text">nikhilkalige@github</span>
         </a>
       </div>
@@ -41,8 +48,5 @@
 
     <div class="push"></div>
   </div>
-  <footer>
-    Powered by <a href="https://github.com/getpelican/pelican">Pelican</a>. Source available on <a href="https://github.com/nikhilkalige/theme">Github</a>
-  </footer>
 </body>
 </html>
