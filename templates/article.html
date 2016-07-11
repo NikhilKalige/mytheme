@@ -4,26 +4,24 @@
 {% block keywords %}{{ article.tags|join(',') }}{% endblock %}
 {% block content %}
 <article itemscope itemtype="http://schema.org/Article">
-    <h1 class="title" itemprop="name">
+    <h2 class="title" itemprop="name">
         <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark"
            title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a>
-    </h1>
+    </h2>
 
     <div class="post-header">
         <div class="meta-info">
             <div class="post-date">
-                <span>
-                    <time itemprop="dateCreated" datetime="{{ article.date|strftime('%Y-%m-%d') }}">
-                        {{ article.date|strftime('%B %d, %Y') }}
-                    </time>
+                <span itemprop="dateCreated" datetime="{{ article.date|strftime('%Y-%m-%d') }}">
+                    {{ article.date|strftime('%B %d, %Y') }}
                 </span>
             </div>
-            {% include 'taglist.html' %}
         </div>
     </div>
     <div class="post-body" itemprop="articleBody">
         {{ article.content }}
     </div>
+    {% include 'taglist.html' %}
 </article>
 {% include 'disqus.html' %}
 {% endblock %}

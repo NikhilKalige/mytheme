@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>{% block title %}{{ SITENAME }}{%endblock%}</title>
     <meta name=viewport content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,700|Quattrocento:400,700|Inconsolata" rel="stylesheet">
     <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/{{ CSS_FILE }}"/>
     <link rel="shortcut icon" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/favicon.ico" type="image/x-icon">
@@ -15,29 +16,28 @@
 <body itemscope itemtype="http://schema.org/WebPage">
     {% include 'analytics.html' %}
 
+    <div class="gradient-overlay"></div>
     <div class="wrapper">
         <header>
-            <a class="title" href="{{ SITEURL }}/" itemprop="url">
-                <span>Short</span><span>Circuits</span>
-                <img class= "logo2" alt="site-logo" src="{{ SITEURL }}/static/images/logo.png">
-            </a>
+            <div class="header clearfix">
+            <div class="logo">
+                <a href="{{ SITEURL }}/" itemprop="url">
+                    <object type="image/svg+xml" data="{{ SITEURL }}/static/images/logo.svg">Your browser does not support SVGs</object>
+                </a>
+            </div>
             <nav itemprop="breadcrumb">
-                <a href="{{ SITEURL }}/projects">Projects</a>
-                <a href="{{ SITEURL }}/about">About</a>
-                <a href="{{ SITEURL }}/contact">Contact</a>
+                <ul>
+                    <li class="active"><a href="{{ SITEURL }}/projects">Projects</a></li>
+                    <li><a href="{{ SITEURL }}/blog">Blog</a></li>
+                    <li><a href="{{ SITEURL }}/about">About</a></li>
+                </ul>
             </nav>
-            <div class="clearfix"></div>
         </header>
 
         <section id="container" itemprop="http://schema.org/mainContentOfPage">
             {% block content %}
             {% endblock %}
         </section>
-        <div class="push"></div>
     </div>
-
-    <footer>
-        Powered by <a href="https://github.com/getpelican/pelican" itemprop="url">Pelican</a>. Source available on <a href="https://github.com/nikhilkalige/nikhilkalige.github.io" itemprop="url">Github</a>
-    </footer>
 </body>
 </html>

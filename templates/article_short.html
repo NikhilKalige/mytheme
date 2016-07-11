@@ -1,16 +1,10 @@
-<li class="blog-post" itemscope itemtype="http://schema.org/Article">
-    <h1 class="title" itemprop="name">
-        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
-    </h1>
-    {# <p>{{ article.summary }}</p> #}
-    <div class="meta-info">
-        <div class="post-date">
-            <span>
-                <time itemprop="dateCreated" datetime="{{ article.date|strftime('%Y-%m-%d') }}">
-                    {{ article.date|strftime('%B %d, %Y') }}
-                </time>
+<li itemscope itemtype="http://schema.org/Article">
+    <a href="{{ SITEURL }}/{{ article.url }}">
+        <div>
+            <span class="title" itemprop="name">{{ article.title }}</span>
+            <span class="date" itemprop="dateCreated" datetime="{{ article.date|strftime('%Y-%m-%d') }}">
+                {{ article.date|strftime('%B %d, %Y') }}
             </span>
         </div>
-        {% include 'taglist.html' %}
-    </div>
+    </a>
 </li>

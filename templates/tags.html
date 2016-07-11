@@ -12,7 +12,7 @@
 
         {% for letter, tag_group in tag_list %}
             <div class="tag-row">
-                <div class="tag-letter">{{letter}}</div>
+                <h3 class="tag-letter">{{letter}}</h3>
                 {% for tag in tag_group %}
                     <a class="tag" href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>
                 {%  endfor %}
