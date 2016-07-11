@@ -1,140 +1,148 @@
 #container {
-    max-width: @max-width;
-    padding: 0 0.8em;
-    margin: 0 auto;
-    margin-top: 6em;
-    @include media(@medium-up) {
-        padding: 0 2em;
-    }
+  margin: 0 auto;
+  padding-top: 1em;
+
+  @media @menu-up {
+    padding-top: 4em;
+  }
 }
 
 article .title {
-    font-size: 2.1rem;
-    margin-bottom: 1rem;
-    text-align: center;
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: -1px;
+}
+
+article a {
+  color: @link-color;
+
+  &:hover {
+    color: @link-highlight-color;
+  }
 }
 
 article .title a {
-    color: black;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
 
-
-.meta-info {
-    padding-bottom: 3rem;
-    padding-left: 7px;
-    //text-align: center;
-    font-family: "Droid Serif";
-    line-height: 1.65;
-    font-size: rem(16);
-}
-
-.post-date {
-    margin: 1rem 0 0;
-}
-
-.article-tag {
-    letter-spacing: 1;
-    text-transform: uppercase;
-    list-style: none;
-    //text-align: center;
-    padding: 0;
-    margin: 0;
+// Needed for tags inside p tags
+article  {
+  span, a {
+    font-size: 1em;
+  }
 }
 
 article .meta-info {
-    text-align: center;
+  text-align: center;
 }
 
-.article-tag li {
+.article-tag {
+  letter-spacing: 1;
+  text-transform: uppercase;
+  list-style: none;
+  //text-align: center;
+  padding: 0;
+  margin: 0;
+
+  li {
     display: inline-block;
-    font-family: "LoraItalic";
+    font-family: @header-font;
 
     a {
-        text-decoration: none;
+      text-decoration: none;
     }
+
+    &:after {
+      content: ',';
+      display: inline-block;
+      margin-left: 0px;
+      margin-right: 4px;
+    }
+
+    &:last-of-type:after {
+      display: none;
+    }
+  }
 }
 
-.article-tag li:after {
-    content: ',';
-    display: inline-block;
-    margin-left: -4px;
-    margin-right: 4px;
+.post-header {
+  margin-top: 2em;
+  color: @secondary-text-color;
 }
 
-.article-tag li:last-of-type:after {
-    display: none;
+.post-meta {
+  padding-bottom: 0;
+  line-height: 1.65;
+  text-align: center;
+
+  @media @menu-up {
+    padding-bottom: 3rem;
+  }
 }
 
-article .article-tag li:after {
-    margin-left: 0px;
+.post-date {
+  margin: 1em 0 0;
+
+  span {
+    font-size: @primary-font-size;
+  }
 }
 
 .post-body {
-    border-top: 1px solid rgba(228, 229, 233, 0.96);
+  // border-top: 1px solid rgba(228, 229, 233, 0.96);
+  padding-top: 1rem;
+  position: relative;
+
+  @media @menu-up {
     padding-top: 3rem;
-    position: relative;
-}
+  }
 
-.post-body h2 {
-    font-size: 1.62rem;
-}
-
-.post-body h2, .post-body h3, .post-body h4, .post-body h5 {
+  h2, h3, h4, h5 {
     margin: 3rem 0 1rem 0;
-}
+  }
 
+  p {
+    margin: 1.4em auto;
+  }
 
-.post-body a {
-    color: #AD141E;
-    box-shadow: 0px 1px 0px 0px rgba(173, 20, 30, 0.1);
-    text-decoration: none;
-    -webkit-transition: color 0.1s linear;
-    -moz-transition: color 0.1s linear;
-    transition: color 0.1s linear;
-}
-
-.post-body p {
-    margin: 0 0 1.404em;
-}
-
-code {
-    color: #404D5B;
-    position: relative;
-    font-family: "Droid Serif";
-
-    &:before {
-        position: absolute;
-        top: 0px;
-        z-index: -1;
-        box-sizing: content-box;
-        padding: 0px 2px;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(50, 50, 50, 0.1);
-        content: "";
-        opacity: 1;
-        left: -2px;
-        border-radius: 3px;
-    }
-}
-
-.post-body img {
+  img {
     margin: .85rem auto;
     max-width: 100%;
     display: block;
-}
+  }
 
-.post-body ul, .post-body ol {
-    margin-bottom: 1rem;
-}
-
-.post-body ul {
-    list-style-type: disc;
-    margin-left: 1.1rem;
-}
-
-.post-body ol {
+  ol {
     list-style-type: decimal;
     margin-left: 1.3rem;
+  }
+}
+
+.post-footer {
+  margin: 4em 0;
+  margin-bottom: 2em;
+  padding-bottom: 6em;
+  border-bottom: 2px solid #ccc;
+
+  @media @menu-up {
+    margin: 8em 0;
+  }
+
+  h4 {
+    margin-bottom: 0.4em;
+  }
+}
+
+.post-tags {
+  margin-left: 0.3em;
+
+  a {
+    font-size: @primary-font-size;
+    margin-right: 10px;
+    border-bottom: 2px solid @secondary-text-color;
+
+    &:hover {
+      border-color: fade(@secondary-text-color, 60%);;
+    }
+  }
 }

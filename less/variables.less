@@ -1,9 +1,29 @@
-@base-font-size: 18px;
+@base-font-size: 16px;
 @em-base: @base-font-size;
-@max-width: em(792);
+@max-width: 56em; // 896px
 
 // media queries
-@small-up: em(320);
-@medium-up: em(792);
-@large-up: em(1920);
-@medium-down: max-width @max-width;
+@small-up: 20em; // 320px
+@medium-up: ~"screen and (min-width: @{max-width})"; // 896px
+@large-up: 120em; // 1920px
+@medium-down: ~"screen and (max-width: @{max-width})";
+
+@menu-width: 38em;
+@menu-up: ~"screen and (min-width: @{menu-width})";
+
+@body-font: "Merriweather";
+@header-font: "Quattrocento";
+
+@primary-text-color: #000;
+@secondary-text-color: #999999;
+@link-color: #AD141E;
+@link-highlight-color: #f44336;
+
+@primary-font-size: 1.125em; // 18px at 16px body
+
+@font-reduction: 0.844;
+// 4th based modular font ratios
+@level1-font-size: 3.157em * @primary-font-size;
+@level2-font-size: 2.369em * @primary-font-size;
+@level3-font-size: 1.777em * @primary-font-size;
+@level4-font-size: 1.333em * @primary-font-size;

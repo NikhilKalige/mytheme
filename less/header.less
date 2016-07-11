@@ -1,17 +1,26 @@
 .wrapper {
+  max-width: @max-width;
   min-height: 100%;
   height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
   height: 100%;
   margin: 0 auto -128px; /* the bottom margin is the negative value of the footer's height */
+
+  @media @medium-down {
+    padding: 0 1.5em;
+  }
 }
 
 
 header {
-  margin: 0 auto;
-  max-width: em(864);
-  font-family: "PlayfairBold";
-  padding-top: 1rem;
+  margin: 34px auto;
+  font-family: @header-font;
+  font-weight: bold;
+  //padding-top: 1rem;
   position: relative;
+
+  @media @menu-up {
+    margin: 64px auto;
+  }
 
   @include media(@medium-down) {
     text-align: center;
@@ -57,7 +66,15 @@ header span:nth-child(1) {
 }
 
 header nav {
-  letter-spacing: -1.5px;
+  float: none;
+  text-align: center;
+
+  @media @menu-up {
+    float: right;
+    text-align: start;
+    margin-top: 8px;
+  }
+
   @include media(@medium-down) {
     float: left;
     width: 100%;
@@ -79,27 +96,49 @@ header a {
   text-decoration: none;
   position: relative;
   color: black;
+  font-weight: 700;
+  font-size: 1.4em;
+  line-height: 1;
 }
 
-nav a {
-  &:after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: red;
-    opacity: 0;
-    @include transition(height 0.3s, opacity 0.3s, transform 0.3s);
-    @include transform(translateY(-10px));
+header nav li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav {
+  li.active a {
+    color: #f44336;
   }
 
-  &:hover:after {
-    height: 5px;
-    opacity: 1;
-    @include transform(translateY(0px));
+  li a:hover {
+    color: #f44336;
   }
+
+  a {
+    transition: all .3s ease;
+  }
+
+  /*a {
+    &:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: red;
+      opacity: 0;
+      @include transition(height 0.3s, opacity 0.3s, transform 0.3s);
+      @include transform(translateY(-10px));
+    }
+
+    &:hover:after {
+      height: 5px;
+      opacity: 1;
+      @include transform(translateY(0px));
+    }
+  }*/
 }
 
 nav a + a {
@@ -119,4 +158,15 @@ nav a + a {
   left: -47px;
   //opacity: 0.8;
   z-index: -1;
+}
+
+.logo {
+  float: none;
+  text-align: center;
+
+  @media @menu-up {
+    float: left;
+    height: 58px;
+    text-align: start;
+  }
 }
