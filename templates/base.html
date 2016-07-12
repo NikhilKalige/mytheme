@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>{% block title %}{{ SITENAME }}{%endblock%}</title>
     <meta name=viewport content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,700|Quattrocento:400,700|Inconsolata" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quattrocento:400,700|Quattrocento+Sans:400,400i,700|Inconsolata" rel="stylesheet">
     <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/{{ CSS_FILE }}"/>
     <link rel="shortcut icon" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/favicon.ico" type="image/x-icon">
@@ -22,13 +22,13 @@
             <div class="header clearfix">
             <div class="logo">
                 <a href="{{ SITEURL }}/" itemprop="url">
-                    <object type="image/svg+xml" data="{{ SITEURL }}/static/images/logo.svg">Your browser does not support SVGs</object>
+                    <img alt="Logo" src="{{ SITEURL }}/static/images/logo.svg" />
                 </a>
             </div>
             <nav itemprop="breadcrumb">
                 <ul>
-                    <li class="active"><a href="{{ SITEURL }}/projects">Projects</a></li>
-                    <li><a href="{{ SITEURL }}/blog">Blog</a></li>
+                    <li><a href="{{ SITEURL }}/projects">Projects</a></li>
+                    <li><a href="{{ SITEURL }}/">Blog</a></li>
                     <li><a href="{{ SITEURL }}/about">About</a></li>
                 </ul>
             </nav>
@@ -39,5 +39,18 @@
             {% endblock %}
         </section>
     </div>
+    <script type="text/javascript">
+        {
+            let class_names = ["projects", "blog", "about"];
+            let li_elements = document.getElementsByTagName("nav")[0]
+                .getElementsByTagName("li");
+            for(let [idx, value] of class_names.entries()) {
+                if(document.getElementById(value)) {
+                    let ele = li_elements[idx];
+                    ele.className += "active";
+                }
+            }
+        }
+    </script>
 </body>
 </html>

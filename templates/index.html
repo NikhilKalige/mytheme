@@ -2,7 +2,7 @@
 {% block content_title %}{% endblock %}
 {% block content %}
 {% if articles %}
-    <ul class="post-list" itemscope itemtype="http://schema.org/Blog">
+    <ul class="post-list" id="blog" itemscope itemtype="http://schema.org/Blog">
     {% for article in articles|rejectattr("project") %}
         {% include 'article_short.html' %}
     {% endfor %}

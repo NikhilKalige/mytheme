@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 {% if pages %}
-    <ul class="post-list" itemscope itemtype="http://schema.org/Blog">
+    <ul class="post-list" id="projects" itemscope itemtype="http://schema.org/Blog">
     {% for article in articles|selectattr("project") %}
         {% include 'article_short.html' %}
     {% endfor %}
