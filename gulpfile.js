@@ -66,7 +66,7 @@ gulp.task("less", function() {
 gulp.task("copy", function() {
     del([paths.production + "**/*"]);
     gulp.src([
-        paths.development + "/static/fonts/**/*",
+        // paths.development + "/static/fonts/**/*",
         paths.production + "/static/js"
         ],
         { base: 'static'}
@@ -86,11 +86,9 @@ gulp.task("copy", function() {
  * Imagemin task
  */
 gulp.task("image", function() {
-    gulp.src(paths.development + "/static/images/**/*.png")
+    gulp.src([paths.development + "/static/images/**/*.png", paths.development + "/static/images/**/*.svg"])
         .pipe(imagemin())
-        .dest(paths.production + "/static/images/")
-        .use(imagemin.optipng({optimizationLevel: 5}));
-
+        .pipe(gulp.dest(paths.production + "/static/images/"));
 });
 
 /**
