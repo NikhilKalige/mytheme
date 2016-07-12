@@ -24,13 +24,8 @@ article a {
 article .title a {
   color: black;
   text-decoration: none;
-}
-
-// Needed for tags inside p tags
-article  {
-  span, a {
-    font-size: 1em;
-  }
+  font-size: 1em;
+  line-height: 1.3;
 }
 
 article .meta-info {
@@ -99,11 +94,12 @@ article .meta-info {
   }
 
   h2, h3, h4, h5 {
-    margin: 3rem 0 1rem 0;
+    margin-top: 2rem;
+    margin-bottom: 0;
   }
 
   p {
-    margin: 1.4em auto;
+    margin: 1.15em auto;
   }
 
   img {
@@ -114,18 +110,18 @@ article .meta-info {
 
   ol {
     list-style-type: decimal;
-    margin-left: 1.3rem;
+    //margin-left: 1.3rem;
   }
 }
 
 .post-footer {
   margin: 4em 0;
   margin-bottom: 2em;
-  padding-bottom: 6em;
+  padding-bottom: 5em;
   border-bottom: 2px solid #ccc;
 
   @media @menu-up {
-    margin: 8em 0;
+    margin: 6em 0;
   }
 
   h4 {
@@ -145,4 +141,8 @@ article .meta-info {
       border-color: fade(@secondary-text-color, 60%);;
     }
   }
+}
+
+.highlight {
+  // font-size: @primary-font-size;
 }

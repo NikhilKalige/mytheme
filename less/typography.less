@@ -37,7 +37,7 @@ ul, ol {
 h1, h2, h3, h4, h5, h6 {
   font-family: @header-font;
   font-weight: bold;
-  letter-spacing: -1px;
+  // letter-spacing: -1px;
 }
 
 h1 {
@@ -74,11 +74,11 @@ h4 {
   }
 }
 
-p {
+p, a, li {
   line-height: 1.6;
 }
 
-p, span, a {
+p, span, a, li {
   font-size: @primary-font-size;
 }
 
@@ -93,6 +93,7 @@ textarea, code, tt, pre {
   font-family: 'Inconsolata', sans-serif, monospace!important;
   color: #000;
   background: #eee;
+  overflow: auto;
 }
 
 pre {
@@ -140,10 +141,6 @@ p code {
   font-family: @body-font !important;
 }
 
-p a {
-  font-size: 1em;
-}
-
-a span {
+p a, p span, a span, li a, li span {
   font-size: 1em;
 }
