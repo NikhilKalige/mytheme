@@ -87,7 +87,7 @@ gulp.task("copy", function() {
  */
 gulp.task("image", function() {
     gulp.src([paths.development + "/static/images/**/*.png", paths.development + "/static/images/**/*.svg"])
-        .pipe(imagemin())
+        .pipe(imagemin({verbose: true}))
         .pipe(gulp.dest(paths.production + "/static/images/"));
 });
 
