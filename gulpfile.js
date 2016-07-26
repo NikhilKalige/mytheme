@@ -77,6 +77,10 @@ gulp.task("copy", function() {
     gulp.src([paths.development + "/static/images/**/*.ico"])
         .pipe(gulp.dest(paths.production + "/static/images/"));
 
+    // copy images
+    gulp.src([paths.development + "/static/images/**/logo.svg"])
+        .pipe(gulp.dest(paths.production + "/static/images/"));
+
     // copy templates
     gulp.src([paths.development + "/templates/**/*"], {base: 'templates'})
         .pipe(gulp.dest(paths.production + "/templates"));
@@ -86,7 +90,9 @@ gulp.task("copy", function() {
  * Imagemin task
  */
 gulp.task("image", function() {
-    gulp.src([paths.development + "/static/images/**/*.png", paths.development + "/static/images/**/*.svg"])
+    gulp.src([paths.development + "/static/images/**/*.png",
+              paths.development + "/static/images/**/*.svg",
+              '!' + paths.development + "/static/images/**/logo.svg"])
         .pipe(imagemin({verbose: true}))
         .pipe(gulp.dest(paths.production + "/static/images/"));
 });
