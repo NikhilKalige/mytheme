@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ReproduceIt: Reddit word count | ShortCircuits</title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Quattrocento:400,700|Quattrocento+Sans:400,400i,700|Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/index.css"/>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+    <meta name="description" content="/*! * * IPython notebook * */ /* CSS font colors for translated ANSI colors. */ .ansibold { font-weight: bold; } /* use dark versions for foreground, to improve visibility */ .ansiblack { color: black; } .ansired { color: darkred; } .ansigreen { color: darkgreen; } .ansiyellow { color: #c4a000; } .ansiblue { color: darkblue; } .ansipurple { color: darkviolet; } .ansicyan { color: steelblue; } .ansigray { color: gray; } /* and light for background, for the ...">
+    <meta name="keywords" content="ReproduceIt,Data,Reddit,Dask">
+    <meta name="author" content="Nikhil K">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="gradient-overlay"></div>
+    <div class="wrapper">
+        <header>
+            <div class="header clearfix">
+            <div class="logo">
+                <a href="/" itemprop="url">
+                    <img alt="Logo" src="/static/images/logo.svg" />
+                </a>
+            </div>
+            <nav itemprop="breadcrumb">
+                <ul>
+                    <li><a href="/projects">Projects</a></li>
+                    <li><a href="/">Blog</a></li>
+                    <li><a href="/about">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="container" itemprop="http://schema.org/mainContentOfPage">
+<article itemscope itemtype="http://schema.org/Article">
+    <h2 class="title" itemprop="name">
+        <a href="/reproduceit-reddit-word-count-dask.html" rel="bookmark"
+           title="Permalink to ReproduceIt: Reddit word count">ReproduceIt: Reddit word&nbsp;count</a>
+    </h2>
+
+    <div class="post-header">
+        <div class="meta-info">
+            <div class="post-date">
+                <span itemprop="dateCreated" datetime="2015-07-21">
+                    July 21, 2015
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="post-body" itemprop="articleBody">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p class="note">ReproduceIt is a series of articles that reproduce the results from data analysis articles focusing on having open data and open&nbsp;code.</p><p>On this small article I reproduce the results (not visualization this time) from the reddit user <a href="https://www.reddit.com/user/fhoffa">/u/fhoffa</a>, he posted a nice word cloud visualization of the most common words on some famous&nbsp;subreddits.</p>
+<p>The reddit post can be found in the data is beautiful subreddit: <a href="https://www.reddit.com/r/dataisbeautiful/comments/3d9qvj/reddit_most_common_words_for_rpolitics_rmovies/">Reddit most common words for /r/politics, /r/movies, /r/trees, /r/science</a>
+and the original word cloud was this:
+<img alt="Original Wordcloud" src="http://i.imgur.com/5Ysd1jE.png" /></p>
+<p>For some context <a href="https://www.reddit.com/r/dataisbeautiful/comments/3d9qvj/reddit_most_common_words_for_rpolitics_rmovies/ct32syr">he mentioned</a> that he used Google BigQuery and Tableau. The data used was the most recent month available (May 2015) in a recent reddit dump that user <a href="https://www.reddit.com/user/Stuck_In_the_Matrix">/u/Stuck_In_the_Matrix</a> <a href="https://www.reddit.com/r/datasets/comments/3bxlg7/i_have_every_publicly_available_reddit_comment/">made available</a> in a nice&nbsp;torrent.</p>
+<p>To reproduce the results I am using <a href="https://github.com/ContinuumIO/dask">dask</a> which is a nice new project from Continuum Analytics which got a lot of attention in the most recent SciPy. A little disclaimer here: I currently work for Continuum but this post is not sponsored in any&nbsp;way.</p>
+<pre><code>Dask enables parallel computing through task scheduling and blocked algorithms. This allows developers to write complex parallel algorithms and execute them in parallel either on a modern multi-core machine or on a distributed cluster.
+
+</code></pre>
+<p>So basically dask is similar to <a href="http://spark.apache.org/">Spark</a> in the way of applying transformation to data but it also works amazingly well in a single multi-core machine and reuses battle tested libraries like numpy and&nbsp;pandas.</p>
+<p>The data I am using is the same data as in the original post wich is 33.46 <span class="caps">GB</span> of a <span class="caps">JSON</span> new line delimited, each line having one comment with some metadata. All this code ran a my MacBook Pro (Retina, Mid 2014) - 2.8 GHz Intel core i7 - 16 <span class="caps">GB</span> 1600 MHz <span class="caps">DDR3</span>.</p>
+<p>Lets jump to the code, as usual some libraries and their versions for&nbsp;reproducibility:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">dask</span>
+<span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="k">import</span> <span class="n">stopwords</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dask</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>'0.6.0'</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Note</strong>: At the moment I am writing this you need the master version of dask since it includes <a href="https://github.com/ContinuumIO/dask/pull/427">a recent feature</a> <a href="https://github.com/mrocklin">Matt Rocklin</a> recently did but it should be available in the next version of&nbsp;dask.</p>
+<p><strong>Update</strong>: Dask 0.6.1 has been realeased so you no longer need to use master just <code>conda install dask</code>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nltk</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>'3.0.4'</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a <code>data</code> variable that points to the big 33 <span class="caps">GB</span> file and set the <code>chunkbytes</code> to 100 <span class="caps">MB</span>, map each item to <code>json.loads</code> since I know that each row is a <span class="caps">JSON</span>&nbsp;doc.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_filenames</span><span class="p">(</span><span class="s2">"RC_2015-05"</span><span class="p">,</span> <span class="n">chunkbytes</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Similar to spark you can <code>take</code> one or more items to see items of the&nbsp;dataset.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>({u'archived': False,
+  u'author': u'rx109',
+  u'author_flair_css_class': None,
+  u'author_flair_text': None,
+  u'body': u'\u304f\u305d\n\u8aad\u307f\u305f\u3044\u304c\u8cb7\u3063\u305f\u3089\u8ca0\u3051\u306a\u6c17\u304c\u3059\u308b\n\u56f3\u66f8\u9928\u306b\u51fa\u306d\u30fc\u304b\u306a',
+  u'controversiality': 0,
+  u'created_utc': u'1430438400',
+  u'distinguished': None,
+  u'downs': 0,
+  u'edited': False,
+  u'gilded': 0,
+  u'id': u'cqug90g',
+  u'link_id': u't3_34di91',
+  u'name': u't1_cqug90g',
+  u'parent_id': u't3_34di91',
+  u'removal_reason': None,
+  u'retrieved_on': 1432703079,
+  u'score': 4,
+  u'score_hidden': False,
+  u'subreddit': u'soccer_jp',
+  u'subreddit_id': u't5_378oi',
+  u'ups': 4},)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now some simple helper functions that we are going to use as&nbsp;filters.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">no_stopwords</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">'english'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">is_word</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"^[0-9a-zA-Z]+$"</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now it comes the <code>dask</code> part which it will look really similar to anyone who has used&nbsp;Spark.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">subreddit</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">'subreddit'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'movies'</span><span class="p">)</span>
+<span class="n">bodies</span> <span class="o">=</span> <span class="n">subreddit</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="s1">'body'</span><span class="p">)</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">bodies</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">)</span><span class="o">.</span><span class="n">concat</span><span class="p">()</span>
+<span class="n">words2</span> <span class="o">=</span> <span class="n">words</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="n">words3</span> <span class="o">=</span> <span class="n">words2</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">no_stopwords</span><span class="p">)</span>
+<span class="n">words4</span> <span class="o">=</span> <span class="n">words3</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_word</span><span class="p">)</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">words4</span><span class="o">.</span><span class="n">frequencies</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Call <code>compute</code> and let dask work. At this moment if you take a look at your process manager you should see something like this: <img alt="Activity Monitor" src="/images/blog/2015/07/activity-monitor.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">values</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see how long the computation took, in this case: around 23 minutes which is about 1.4 <span class="caps">GB</span> per&nbsp;minute.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">elapsed_time</span>  <span class="c1"># seconds</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>1416.4745790958405</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With the word count done we can just sort the python list and see the most common&nbsp;words.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>84672</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sort</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sort</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>[(u'movie', 75848),
+ (u'like', 60028),
+ (u'one', 41682),
+ (u'would', 37354),
+ (u'think', 33539),
+ (u'really', 32494),
+ (u'film', 30931),
+ (u'movies', 30196),
+ (u'people', 30046),
+ (u'good', 27207),
+ (u'see', 25992),
+ (u'time', 22783),
+ (u'get', 21364),
+ (u'much', 20097),
+ (u'even', 19977),
+ (u'deleted', 19464),
+ (u'could', 19338),
+ (u'know', 19275),
+ (u'first', 18435),
+ (u'well', 18155),
+ (u'also', 17935),
+ (u'great', 16729),
+ (u'make', 16668),
+ (u'way', 16494),
+ (u'gt', 16097),
+ (u'still', 15747),
+ (u'pretty', 14808),
+ (u'going', 14649),
+ (u'made', 14630),
+ (u'watch', 13648),
+ (u'http', 13338),
+ (u'actually', 13307),
+ (u'love', 12916),
+ (u'something', 12838),
+ (u'never', 12762),
+ (u'films', 12688),
+ (u'seen', 12642),
+ (u'though', 12576),
+ (u'character', 12395),
+ (u'thought', 12332),
+ (u'say', 12320),
+ (u'man', 12247),
+ (u'scene', 12126),
+ (u'bad', 12065),
+ (u'got', 12004),
+ (u'thing', 11895),
+ (u'lot', 11864),
+ (u'go', 11792),
+ (u'story', 11616),
+ (u'better', 11599),
+ (u'want', 11224),
+ (u'right', 10846),
+ (u'2', 10698),
+ (u'back', 10600),
+ (u'ca', 10434),
+ (u'action', 10286),
+ (u'best', 10261),
+ (u'max', 10066),
+ (u'point', 10031),
+ (u'shit', 9546),
+ (u'sure', 9543),
+ (u'yeah', 9334),
+ (u'look', 9181),
+ (u'new', 9160),
+ (u'said', 9131),
+ (u'probably', 8858),
+ (u'saw', 8832),
+ (u'every', 8811),
+ (u'end', 8776),
+ (u'ever', 8752),
+ (u'guy', 8717),
+ (u'world', 8687),
+ (u'characters', 8605),
+ (u'two', 8567),
+ (u'https', 8521),
+ (u'years', 8478),
+ (u'feel', 8453),
+ (u'things', 8200),
+ (u'many', 8094),
+ (u'part', 8011),
+ (u'maybe', 7917),
+ (u'looks', 7852),
+ (u'always', 7792),
+ (u'mean', 7784),
+ (u'original', 7692),
+ (u'last', 7643),
+ (u'big', 7580),
+ (u'work', 7490),
+ (u'anything', 7480),
+ (u'take', 7478),
+ (u'makes', 7420),
+ (u'fucking', 7415),
+ (u'need', 7286),
+ (u'someone', 7282),
+ (u'different', 7254),
+ (u'little', 7241),
+ (u'mad', 7156),
+ (u'whole', 6882),
+ (u'old', 6782),
+ (u'kind', 6776)]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Save a file with the&nbsp;results</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [17]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'r_movies.txt'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sort</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This was a simple post making some computation on 33 <span class="caps">GB</span> of data in a single node using around 20 lines of python. The main objective was to reproduce some of the results other people have made with bigger tools like Google Big Query with simpler but also powerful tools in a single node. Also I used dask for the first time and I was kinda impressed by&nbsp;it.</p>
+<p>If you have some medium size data a big workstation and dont want to mess up with clusters you should checkout <a href="https://github.com/ContinuumIO/dask">dask</a>. You can also use dask in a cluster but lets save that for a diffent&nbsp;post.</p>
+</div>
+</div>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+    </div>
+<div class="post-footer">
+        <h4>Tags</h4>
+        <div class="post-tags">
+                <a itemprop="keywords" href="/tag/reproduceit.html">ReproduceIt</a>
+                <a itemprop="keywords" href="/tag/data.html">Data</a>
+                <a itemprop="keywords" href="/tag/reddit.html">Reddit</a>
+                <a itemprop="keywords" href="/tag/dask.html">Dask</a>
+        </div>
+</div></article>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'shortcircuits';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>        </section>
+    </div>
+    <script type="text/javascript">
+        {
+            let class_names = ["projects", "blog", "about"];
+            let li_elements = document.getElementsByTagName("nav")[0]
+                .getElementsByTagName("li");
+            for(let [idx, value] of class_names.entries()) {
+                if(document.getElementById(value)) {
+                    let ele = li_elements[idx];
+                    ele.className += "active";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
