@@ -1,0 +1,26 @@
+.anchor-link {
+  display: none;
+}
+
+.cell.code_cell {
+    position: relative;
+}
+
+.input .input_prompt, .output .output_prompt {
+    display: none;
+
+    @media @ipy-up {
+        display: inherit;
+        position: absolute;
+        left: -70px;
+        padding-top: 6px
+    }
+}
+
+.output_execute_result pre {
+    border-color: fade(@link-highlight-color, 65%);
+}
+
+.code_cell .input_area pre {
+    border-color: fade(#29BB42, 45%);
+}
