@@ -51,6 +51,13 @@
                 }
             }
         }
+        {
+            let iframes = document.querySelectorAll("[src*='youtube']");
+            function center(ele) {
+                ele.parentElement.style.textAlign = "center";
+            }
+            iframes.forEach(center);
+        }
     </script>
 </body>
 </html>
