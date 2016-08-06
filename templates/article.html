@@ -5,8 +5,13 @@
 {% block content %}
 <article itemscope itemtype="http://schema.org/Article">
     <h2 class="title" itemprop="name">
+        {% if article.series %}
+            {% set title = article.series.name + ' ' + article.series.index|string + ': ' +  article.title %}
+        {% else %}
+            {% set title = article.title %}
+        {% endif %}
         <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark"
-           title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a>
+           title="Permalink to {{ title|striptags }}"> {{ title }}</a>
     </h2>
 
     <div class="post-header">
