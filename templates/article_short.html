@@ -1,7 +1,12 @@
 <li itemscope itemtype="http://schema.org/Article">
     <a href="{{ SITEURL }}/{{ article.url }}">
         <div>
-            <span class="title" itemprop="name">{{ article.title }}</span>
+            {% if article.series %}
+                {% set title = article.series.name + ' ' + article.series.index|string + ': ' +  article.title %}
+            {% else %}
+                {% set title = article.title %}
+            {% endif %}
+            <span class="title" itemprop="name">{{ title }}</span>
             <span class="date" itemprop="dateCreated" datetime="{{ article.date|strftime('%Y-%m-%d') }}">
                 {{ article.date|strftime('%B %d, %Y') }}
             </span>

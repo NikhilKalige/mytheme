@@ -1,4 +1,16 @@
 <div class="post-footer">
+    {% if article.series %}
+        <h4>Posts in this series</h4>
+        <div class="post-tags">
+            {% for part_article in article.series.all %}
+                {% if part_article != article %}
+                    <a href='{{ SITEURL }}/{{ part_article.url }}'>
+                        {{ article.series.name }} {{ article.series.index }}: {{ part_article.title }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
     {% if article.tags %}
         <h4>Tags</h4>
         <div class="post-tags">
