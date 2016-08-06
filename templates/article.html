@@ -4,7 +4,7 @@
 {% block keywords %}{{ article.tags|join(',') }}{% endblock %}
 {% block content %}
 <article itemscope itemtype="http://schema.org/Article">
-    <h2 class="title" itemprop="name">
+    <h1 class="title" itemprop="name">
         {% if article.series %}
             {% set title = article.series.name + ' ' + article.series.index|string + ': ' +  article.title %}
         {% else %}
@@ -12,7 +12,7 @@
         {% endif %}
         <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark"
            title="Permalink to {{ title|striptags }}"> {{ title }}</a>
-    </h2>
+    </h1>
 
     <div class="post-header">
         <div class="meta-info">
