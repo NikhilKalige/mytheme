@@ -5,7 +5,7 @@
             {% for part_article in article.series.all %}
                 {% if part_article != article %}
                     <a href='{{ SITEURL }}/{{ part_article.url }}'>
-                        {{ article.series.name }} {{ article.series.index }}: {{ part_article.title }}
+                        {{ article.series.name }} {{ part_article.series.index }}: {{ part_article.title }}
                     </a>
                 {% endif %}
             {% endfor %}
